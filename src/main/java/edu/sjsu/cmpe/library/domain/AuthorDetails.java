@@ -1,8 +1,11 @@
 package edu.sjsu.cmpe.library.domain;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class AuthorDetails
 {
 private int authid;
+@NotEmpty
 private String name;
 public int getAuthid() {
 	return authid;

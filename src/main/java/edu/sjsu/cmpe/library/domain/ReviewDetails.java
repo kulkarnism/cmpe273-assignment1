@@ -1,9 +1,12 @@
 package edu.sjsu.cmpe.library.domain;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class ReviewDetails
 {
-
+@NotEmpty
 private int rating;
+@NotEmpty
 private String comment;
 private int rid;
 //private long isbn;

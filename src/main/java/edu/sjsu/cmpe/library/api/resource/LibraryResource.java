@@ -1,6 +1,7 @@
 package edu.sjsu.cmpe.library.api.resource;
 
 
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -11,22 +12,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import javax.ws.rs.core.Response;
+
+
+
 
 
 //import com.google.common.base.Optional;
@@ -36,6 +25,8 @@ import com.yammer.metrics.annotation.Timed;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+//import java.util.regex.Pattern;
+
 
 import edu.sjsu.cmpe.library.dto.AuthorDto;
 import edu.sjsu.cmpe.library.dto.BookDto;
@@ -60,7 +51,7 @@ public class LibraryResource{
 	@POST	
 	@Timed(name = "create-book")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createBook(BookDetails book)
+	public Response createBook(@Valid BookDetails book)
 	{
 		
 		//Generate new isbnnum
@@ -74,6 +65,10 @@ public class LibraryResource{
 			book.getAuthors()[i].setAuthid(authid);
 		}		
 		book.setIsbn(isbn);		 
+		if(book.getStatus() == null)
+		{
+			book.setStatus("available");
+		}	
 				
 		bookinfo.put(isbn,book);		
 		
@@ -139,7 +134,7 @@ public class LibraryResource{
 	public BookDto updateBookStatus(@PathParam("isbn") Long isbn, @QueryParam("status")String status)
 	{
 		
-		BookDetails book = new BookDetails();
+		BookDetails book = new BookDetails();		
 		String new_status = (String)status;
 		System.out.println("status:"+status);
 		if(bookinfo.containsKey(isbn))

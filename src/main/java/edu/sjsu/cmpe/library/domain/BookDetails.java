@@ -7,7 +7,18 @@ import java.util.List;
 
 
 
+
+
+
+import javax.validation.constraints.Pattern;
+import javax.ws.rs.DefaultValue;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+
+
 
 //import java.util.ArrayList;
 //import java.util.List;
@@ -17,13 +28,19 @@ import edu.sjsu.cmpe.library.domain.AuthorDetails;
 public class BookDetails
 {
 	private Long isbn = (long) 0;
+	@NotEmpty
 	private String title;
+	@NotEmpty
 	@JsonProperty("publication-date")
 	private String pub_date;	
 	private String language;
 	@JsonProperty("num-pages")
 	private int nop = 0;
-	private String status;	
+	
+	@Pattern(regexp="(available|checked-out|in-queue|lost)", flags={Pattern.Flag.CASE_INSENSITIVE})
+	@DefaultValue("available")
+	private String status;
+	
 	private AuthorDetails[] authors = new AuthorDetails[20];
 	private List<ReviewDetails> reviews = new ArrayList<ReviewDetails>();
 		
